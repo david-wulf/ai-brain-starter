@@ -1,8 +1,11 @@
 # Testfragen fuer suche.py --test
-# Format: Frage <TAB> erwarteter Pfad relativ zu okf/ <TAB> optional: --bereich
+# Format: Frage <TAB> erwarteter Pfad relativ zu okf/ <TAB> optional: Bereich (z.B. arbeit/ordner1)
 # Fragen so formulieren, wie du sie stellen wuerdest -- nicht den Titel abschreiben.
-# Die drei Beispielzeilen durch eigene ersetzen, sobald die Beispiel-Records geloescht sind.
+# Die Beispielzeilen durch eigene ersetzen, sobald die Beispiel-Records geloescht sind.
 # Neue Zeile ergaenzen, sobald eine Suche danebengeht.
 Warum verlinke ich nicht bundle-absolut?	arbeit/beispiel-decision.md
 Wie mache ich aus einem Artikel eine Quellen-Notiz?	methoden/beispiel-playbook.md
 Welche OKF-Version nutzt das Bundle und wo weicht es ab?	okf-spec.md
+Was darf ich bei diesem Account auf keinen Fall tun?	arbeit/ordner1/soul/never-do.md	arbeit/ordner1
+Wie ist die Reaktionsquote definiert?	arbeit/ordner2/beispiel-kennzahl.md
+Worauf wartet das private Projekt?	privat/ordner2/beispiel-projekt.md

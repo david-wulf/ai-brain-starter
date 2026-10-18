@@ -12,7 +12,7 @@ Git-Repo aus Markdown-Dateien.
 > Documentation and templates are in German; the format itself is language-agnostic.
 
 Das Kit ist die **Tooling-Schicht** eines gewachsenen Brains, aus dem der private Inhalt entfernt
-wurde. Es enthält keine Wissens-Records außer zwei Beispielen — die schreibst du.
+wurde. Es enthält keine echten Wissens-Records, nur eine fiktive Beispielstruktur — die echten schreibst du.
 
 ## Was drin ist
 
@@ -26,7 +26,7 @@ wurde. Es enthält keine Wissens-Records außer zwei Beispielen — die schreibs
 | `chronik.py` | erntet die datierten Änderungsmarker: was wurde wann gekippt |
 | `offene_punkte.py` | sammelt die offenen Punkte eines Bereichs als Leseliste |
 | `suche.py` + `suche_testfragen.tsv` | findet den passenden Record (BM25F) und liest nur den nötigen Abschnitt; misst die eigene Trefferquote |
-| `okf/` | Bundle-Skelett mit drei Bereichen und zwei Beispiel-Records |
+| `okf/` | Bundle-Skelett mit drei Bereichen und fiktiven Beispielordnern (`ordner1/`, `ordner2/`, `quellen/`) — je ein Record pro Typ |
 | `.obsidian/app.json` | die drei formatkritischen Obsidian-Einstellungen |
 
 Alle vier Skripte laufen mit der **Python-Standardbibliothek**, ohne Abhängigkeiten.
@@ -64,8 +64,11 @@ was nicht auf dich zutrifft, ist schlimmer als eine Lücke, weil der Agent es al
       ist ein Beispiel, keine Empfehlung für dich.
 - [ ] **`<Aufgabenwerkzeug>` in `CLAUDE.md`** durch deins ersetzen und die Werkzeug-Grenzen
       aufschreiben: welches Tool darf in welchem Kontext benutzt werden?
-- [ ] **Beispiel-Records löschen:** `okf/arbeit/beispiel-decision.md`, `okf/methoden/beispiel-playbook.md`
-      — samt der Einträge in den jeweiligen `index.md` und der Beispielzeilen in `suche_testfragen.tsv`.
+- [ ] **Beispiele löschen oder umbauen:** die Ordner `okf/arbeit/ordner1/`, `ordner2/`, `quellen/`,
+      `okf/privat/ordner1/`, `ordner2/` sowie `okf/arbeit/beispiel-decision.md` und
+      `okf/methoden/beispiel-playbook.md` — samt der Einträge in den jeweiligen `index.md` und der
+      Beispielzeilen in `suche_testfragen.tsv`. Wer lieber umbaut: Ordner nach eigenen Accounts und
+      Themen umbenennen und die Links mitziehen.
 - [ ] **Remote prüfen:** Ein Brain enthält früher oder später Sensibles. Ein öffentliches Repo ist
       dafür der falsche Ort — nimm einen privaten Remote oder eine selbstgehostete Instanz.
 - [ ] **Obsidian öffnen** und die drei Einstellungen unten gegenprüfen.
