@@ -1,0 +1,50 @@
+# Obsidian (Workspace-/Cache-State, nicht das Wissen)
+.obsidian/workspace
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+.trash/
+
+# OneDrive / OS
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+*~
+*.tmp
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Inbox-Staging (Rohmaterial; nur README versionieren) — auch verschachtelt
+_inbox/*
+!_inbox/README.md
+**/_inbox/*
+!**/_inbox/README.md
+
+# Outputs-Staging (Agent-Deliverables: Reports/Exporte; nur README versionieren) — auch verschachtelt
+_outputs/*
+!_outputs/README.md
+**/_outputs/*
+!**/_outputs/README.md
+
+# Ablage der Claude-Desktop-App im Repo-Root — Deliverables gehören nach _outputs/, nicht ins Git
+/Claude outputs/
+
+# Rohdaten & Exporte (kein Wissen — nur Destillate gehören ins Brain)
+*.xlsx
+*.xls
+*.csv
+*.docx
+*.doc
+_daten/
+# Bild-/PDF-Exporte im Repo-Root (Screenshots, Ahrefs-Exporte o.Ä.)
+/*.png
+/*.jpg
+/*.jpeg
+/*.pdf
+
+# Agenten-Einstellungen (kein Wissen)
+.claude/

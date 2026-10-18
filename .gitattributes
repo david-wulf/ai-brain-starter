@@ -1,0 +1,12 @@
+# Zeilenenden repo-weit auf LF normalisieren.
+# Ohne das schreiben Windows-Werkzeuge einzelne Dateien auf CRLF um; im Diff
+# erscheint dann die komplette Datei als geaendert, obwohl kein Zeichen anders ist.
+* text=auto eol=lf
+
+# Binaerdateien nie anfassen
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.pdf binary
+*.xlsx binary
+*.xls binary
