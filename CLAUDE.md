@@ -106,7 +106,11 @@ hybrid → nicht mehr als Autorität verwenden. Beim **Schreiben** gilt: zeitgeb
 Rankings, Traffic-/Marktzahlen, Feature-Stände) mit `(Stand: YYYY-MM, Quelle)` datieren.
 
 ## NIE ins Brain
-- **Secrets** (Passwörter, API-Keys, Tokens, Versicherungsnummern, Logins).
+- **Zugangsdaten** (Passwörter, PINs, API-Keys, Tokens, Logins). **Erlaubt** sind dagegen
+  Identifikations- und Geschäftsnummern (Kontonummer/IBAN, Steuer- und USt-IdNr., Vertrags-,
+  Versicherungs- und Darlehensnummern) und technische Kennungen ohne Zugangswirkung (Tenant-/App-IDs,
+  Projekt-IDs, öffentliche IPs). Sie bei Reviews nicht entfernen und nicht als Befund melden —
+  tabu ist, was Zugang verschafft, nicht was etwas identifiziert.
 - **Rohmaterial** (Mails, Transkripte, Protokolle, Briefings) — nur das Destillat. Office- und
   Datenexporte (`.docx`/`.doc`, `.xlsx`/`.xls`, `.csv`) fängt die `.gitignore` deshalb pauschal ab:
   Sie landen im Repo-Root oder in `_inbox/`, werden destilliert und danach gelöscht.
@@ -121,6 +125,9 @@ Rankings, Traffic-/Marktzahlen, Feature-Stände) mit `(Stand: YYYY-MM, Quelle)` 
 4. **Ein Thema, eine lebende Datei:** aktualisieren statt duplizieren, dann `generated.by` +
    `generated.at` setzen (OKF v0.2; die Felder lösen das alte `timestamp` ab). Ein bestehendes
    `verified` bei inhaltlicher Änderung **leeren** — die alte Bestätigung gilt nicht mehr.
+   **Nur eine geänderte Aussage zählt als inhaltlich.** Reine Verweis-Ergänzungen (Verwandtes,
+   Index-Zeile, Querverweis) lassen `generated` unverändert — sonst meldet der Validator bei
+   jedem Record, der per `basiert_auf` daran hängt, eine geänderte Voraussetzung.
 5. **`index.md` mitpflegen** beim Anlegen/Umbenennen; beim Umbenennen alle Links mitziehen.
 6. **Quellen verlinken:** `resource:` im Frontmatter und/oder Body-Link; externe Literatur als
    `source` in `okf/arbeit/quellen/` und von dort in die Konzepte verlinken. Stützt eine Quelle

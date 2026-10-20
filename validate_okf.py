@@ -3,7 +3,8 @@
 
 Prueft das OKF-Bundle unter okf/:
   1. Jede .md-Datei hat einen Frontmatter-Block (zwischen --- ) mit einer type:-Zeile.
-  2. Jeder relative Markdown-Link loest auf eine existierende Datei auf
+  2. Jeder relative Markdown-Link loest auf eine existierende Datei auf; fehlt ein
+     gitignoriertes Ziel (_daten/, _outputs/ ... im Worktree/Clone), nur WARNUNG
      (externe http(s)-/mailto-Links und reine Anker werden uebersprungen).
   3. Jeder Ordner unter okf/ (inkl. okf/ selbst) enthaelt eine index.md.
   4. OKF-v0.2-Felder:
@@ -75,6 +76,7 @@ Aufruf:  python validate_okf.py [bundle-root] [--lesbarkeit]   (Default: ./okf)
 import datetime
 import os
 import re
+import subprocess
 import sys
 
 try:  # optional, nur als Gegenprobe -- der Validator laeuft auch ohne
@@ -140,7 +142,7 @@ def check_frontmatter(path, lines):
     return (idx + 1, "Pflichtfeld 'type:' fehlt im Frontmatter.")
 
 
-def check_links(path, lines, errors):
+def check_links(path, lines, errors, warnings):
     base_dir = os.path.dirname(path)
     for lineno, line in enumerate(lines, start=1):
         for target in LINK_RE.findall(line):
@@ -165,8 +167,34 @@ def check_links(path, lines, errors):
             # Query abtrennen (selten in lokalen Links, aber sicher ist sicher)
             path_part = path_part.split("?", 1)[0]
             resolved = os.path.normpath(os.path.join(base_dir, path_part))
-            if not os.path.exists(resolved):
+            if os.path.exists(resolved):
+                continue
+            if _git_ignoriert(resolved):
+                warnings.append((path, lineno, f"Link auf gitignorierten Pfad '{path_part}' fehlt in "
+                                               "diesem Checkout (Worktree/Clone) -- lokal pruefen."))
+            else:
                 errors.append((path, lineno, f"Toter Link: '{target}' -> '{path_part}' existiert nicht."))
+
+
+def _git_ignoriert(pfad):
+    """True, wenn git den Pfad ignoriert (_daten/, _outputs/, _inbox/ ...).
+
+    Solche Ziele gibt es nur im Haupt-Checkout; in einem Worktree oder frischen Clone
+    fehlen sie, ohne dass der Link falsch ist. Ohne git -> False (bleibt Fehler)."""
+    pfad = os.path.abspath(pfad)
+    cwd = os.path.dirname(pfad)
+    while not os.path.isdir(cwd) and os.path.dirname(cwd) != cwd:
+        cwd = os.path.dirname(cwd)  # naechster existierender Elternordner
+    # Im pre-commit-Hook setzt git ein relatives GIT_DIR; von einem Unterordner aus
+    # findet git damit kein Repo mehr. Repo-Erkennung deshalb ueber das cwd.
+    env = {k: v for k, v in os.environ.items()
+           if k not in ("GIT_DIR", "GIT_WORK_TREE", "GIT_INDEX_FILE")}
+    try:
+        r = subprocess.run(["git", "check-ignore", "-q", "--no-index", pfad],
+                           cwd=cwd, capture_output=True, timeout=10, env=env)
+    except (OSError, subprocess.SubprocessError):
+        return False
+    return r.returncode == 0
 
 
 def _iso_date(value):
@@ -336,7 +364,13 @@ def check_sources(path, lines, errors, warnings):
                 f"sources-Eintrag '{sid or '?'}' ohne 'resource' — Quelle nicht identifizierbar."))
         elif not EXTERNAL_SCHEME_RE.match(res) and not res.startswith("mailto:"):
             target = os.path.normpath(os.path.join(base_dir, res.split("#")[0]))
-            if not os.path.exists(target):
+            if os.path.exists(target):
+                pass
+            elif _git_ignoriert(target):
+                warnings.append((path, lineno,
+                    f"sources-resource '{res}' liegt in einem gitignorierten Pfad und fehlt in "
+                    "diesem Checkout (Worktree/Clone) -- lokal pruefen."))
+            else:
                 errors.append((path, lineno,
                     f"sources-resource '{res}' loest nicht auf ('{target}' fehlt)."))
 
@@ -698,7 +732,11 @@ def check_lesbarkeit(path, lines, hinweise):
     ist_index = os.path.basename(path) == "index.md"
     if ist_index:
         if groesse > INDEX_MAX:
-            hinweise["index"].append((groesse, path, None))
+            _ul, uv = _scalar_field(lines, span[0], span[1], "umfang_ok")
+            if uv:
+                hinweise["ausnahme"].append((groesse, path, None))
+            else:
+                hinweise["index"].append((groesse, path, None))
         return
     if groesse > UMFANG_PRUEFEN:
         _ul, uv = _scalar_field(lines, span[0], span[1], "umfang_ok")
@@ -760,7 +798,7 @@ def main():
         fm = check_frontmatter(path, lines)
         if fm is not None:
             errors.append((path, fm[0], fm[1]))
-        check_links(path, lines, errors)
+        check_links(path, lines, errors, warnings)
         check_governance(path, lines, errors, warnings)
         check_sources(path, lines, errors, warnings)
         check_derived(path, lines, errors, warnings, gen_cache)

@@ -55,7 +55,7 @@ ersetzt_durch:           # Eigen-Extension: nur bei status: deprecated — Pfad 
 umfang_ok: Begründung    # Eigen-Extension: nur für Records, die bewusst über 25 KB bleiben
 tags: [beispiel, format]
 generated:               # OKF v0.2 — löst das alte `timestamp` ab
-  by: claude/opus-5      # wer den Inhalt erzeugt hat: human:<kuerzel> | claude/<modell> | <agent>
+  by: claude/opus-5.5    # wer den Inhalt erzeugt hat: human:<kuerzel> | claude/<modell> | <agent>
   at: 2026-07-26         # letzte inhaltliche Änderung (ISO 8601)
 verified:                # OKF v0.2 — Bestätigungen; leere Liste = ungeprüft
   - { by: human:<kuerzel>, at: 2026-07-26 }
@@ -64,6 +64,10 @@ status: stable           # draft | stable | deprecated (fehlt = stable)
 ---
 ```
 
+**Felder ohne Wert weglassen:** kein leeres `resource:`, kein `verified:` ohne Eintrag, kein
+`stale_after:` ohne Datum. Ein fehlendes `verified` heißt „ungeprüft". Für `generated.by` gilt
+eine Schreibweise: `claude/<modell>` mit Punkt in der Version, z. B. `claude/opus-5.5`.
+
 ### `generated` und `verified` (OKF v0.2)
 
 Ein Brain wie dieses wird überwiegend von Agenten geschrieben und von einem Menschen kuratiert —
@@ -71,7 +75,8 @@ genau die Situation, für die v0.2 die Trust-Felder eingeführt hat:
 
 - **`generated.by`** — wer den *Inhalt* erzeugt hat. Bei jeder inhaltlichen Änderung mitsetzen.
 - **`generated.at`** — ISO-Datum der letzten inhaltlichen Änderung. Ersetzt `timestamp`
-  vollständig; der Validator warnt, wenn es fehlt.
+  vollständig; der Validator warnt, wenn es fehlt. Reine Verweis-Ergänzungen (Verwandtes,
+  Index-Zeile, Querverweis) sind keine inhaltliche Änderung und lassen es unverändert.
 - **`verified`** — Liste unabhängiger Bestätigungen, jeweils `{ by, at }`. Ein Eintrag mit
   `by: human:<kuerzel>` hebt den Record auf den Trust-Tier *human-reviewed*. Leere Liste heißt
   *unverified* — das ist ein ehrlicher Zustand, kein Makel.
@@ -453,6 +458,13 @@ Schema, damit das volle Kontextwissen sauber lebt:
     └── meetings/         — type: meeting  (Destillat, kein Protokoll)
 ```
 
+- **Unterordner entstehen erst mit ihrem ersten Record.** `memory/decisions/`, `patterns/` und
+  `meetings/` werden nicht auf Vorrat mit leerem `index.md` angelegt; bis dahin sagt der
+  Eltern-Index in einer Zeile, dass es noch nichts gibt. Der Baum oben zeigt das volle Schema,
+  nicht den Pflichtbestand. Grund aus dem Ursprungs-Brain: Sieben `meetings/`-Ordner enthielten
+  nur ihren Index — leere Ordner sahen nach Bestand aus und kosteten bei jeder Pfadsuche einen
+  Lesevorgang.
+
 - **Soul** = stabiles Markenwissen. Nicht jede Beiläufigkeit rein, sonst verwässert die Schicht.
 - **Memory** = Erfahrungswissen aus dem Tun. Jede neue Entscheidung/Erkenntnis sofort als
   gesourcten Eintrag.
@@ -502,6 +514,14 @@ Ein veraltetes Brain ist schlimmer als keins — die KI klingt dann selbstsicher
 - Dateinamen: kleingeschrieben, Bindestriche statt Leerzeichen, ohne Umlaute
   (`projekt-kickoff.md`, `werkzeug-auswahl.md`).
 - Meetings: `YYYY-MM-DD-kurz-titel.md`.
+- Decisions in `memory/decisions/`: `YYYY-MM-DD-kurz-titel.md` mit dem Entscheidungsdatum.
+- Quellen (`type: source`): `<thema>-<autor>.md`, bei mehreren Teilen eines Autors
+  `<thema>-<autor>-<jahr>.md`. Bestehende Ausnahmen bleiben, neue Records folgen der Regel.
+- Tags: klein, ASCII statt Umlaute (`persoenlichkeit`), Bindestriche, Bereichstag im Plural
+  (`methoden`). Keine Tags, die ein Frontmatter-Feld doppeln (`deprecated`, `draft`) oder den
+  Ordner wiederholen.
+- `source`-Records dürfen zusätzlich `authors:` (Autor oder Organisation des Originals) und
+  `source_type:` führen — Eigen-Extensions, nur für diesen Typ.
 - Welten unter `okf/`: `arbeit/` (beruflich), `privat/` (persönlich) und `methoden/`
   (bereichsübergreifende Denk-/Schaffenswerkzeuge). In Arbeits-/Client-Kontext ist `privat/`
   tabu; `methoden/` ist es **nicht**.
