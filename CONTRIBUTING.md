@@ -509,6 +509,28 @@ Ein veraltetes Brain ist schlimmer als keins — die KI klingt dann selbstsicher
 - **Abgeleitete Sichten** nachziehen, sobald der Validator sie meldet — das ist der billigste
   Pflege-Hebel überhaupt, weil er den Fall benennt statt ihn suchen zu lassen.
 
+## Bilder und andere Binärdateien
+
+Bilder sind erlaubt, wenn sie **visuellen Kontext** tragen, den Text nicht ersetzt: Logo und Icon,
+Moodboard- und Layout-Vorbilder, Diagramme, ein SERP- oder Seitenausschnitt als Beleg.
+
+- **Ablage:** in einem Ordner `assets/` neben dem Record, der das Bild nutzt. Der Ordner bekommt
+  ein `index.md` mit einer Zeile je Datei (was sie zeigt, wofür sie taugt). Bilder im Repo-Root
+  ignoriert die `.gitignore` absichtlich — der Root ist nur Durchgangsstation.
+- **Einbinden** mit relativem Link: `![Startseite Hero, Stand 2026-10](assets/startseite-hero-2026-10.webp)`.
+  Der Validator prüft den Pfad wie jeden anderen Link. Keine Obsidian-Embeds (`![[…]]`).
+- **Der Text trägt die Auffindbarkeit.** `suche.py` liest keine Bilder, und ein Agent sieht ein
+  Bild nur, wenn er die Datei gezielt öffnet. Deshalb steht im Record neben dem Bild, *was es zeigt
+  und was man daran sehen soll* — ein Bild ohne diesen Satz ist für die Suche nicht vorhanden.
+- **Benennung:** wie Records (klein, Bindestriche, ohne Umlaute). Zeigt ein Bild einen Zustand,
+  der sich ändert (Website, SERP, Dashboard), gehört der Monat in den Namen: `…-2026-10.webp`.
+- **Größe:** vorher verkleinern, Richtwert WebP oder JPG mit höchstens 1600 px Breite und unter
+  500 KB. Jede Version bleibt dauerhaft in der Git-Historie. Druck- und Vektor-Originale bleiben
+  außerhalb des Brains, hier nur die Web-Ableitung.
+- **Nicht rein:** Screenshots von Mails, Chats oder medizinischen Unterlagen — das ist Rohmaterial
+  in anderer Form. Ebenso Bilder mit sichtbaren Zugangsdaten und Dashboards mit Kundenzahlen, die
+  nicht in genau dieses Projekt gehören. Die Regeln aus „NIE ins Brain" gelten für Bilder unverändert.
+
 ## Namenskonventionen
 
 - Dateinamen: kleingeschrieben, Bindestriche statt Leerzeichen, ohne Umlaute
