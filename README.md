@@ -20,6 +20,7 @@ wurde. Es enthält keine echten Wissens-Records, nur eine fiktive Beispielstrukt
 |---|---|
 | `CONTRIBUTING.md` | die Hausordnung: Typ-Taxonomie, Frontmatter, Criticality, Abhängigkeitsfelder |
 | `CLAUDE.md` | die Regeln, die der Agent liest — Zugriffsgrenzen, Workflows, Grundprinzipien |
+| `AGENTS.md` | Verweis auf `CLAUDE.md` für andere Agenten (Codex, Cursor …), die `AGENTS.md` automatisch laden — Regeln nur in `CLAUDE.md` pflegen |
 | `okf/okf-spec.md` | wo OKF definiert ist, welche Version genutzt wird, bewusste Abweichungen |
 | `templates/` | 14 Vorlagen, eine je Record-Typ |
 | `validate_okf.py` | prüft Format, Links, Indizes, Felder, Abhängigkeiten — Exit ≠ 0 bei Fehlern |
